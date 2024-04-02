@@ -30,11 +30,28 @@ public class UserDAO implements ISecurityDAO{
         em.close();
         return user;
     }
-    public User verifyUser(String username, String password) throws EntityNotFoundException {
+
+
+    public User createUser(String username, String password, String email, int phoneNumber) {
         EntityManager em = emf.createEntityManager();
-        User user = em.find(User.class, username);
+        em.getTransaction().begin();
+        User user = new User(username, password);
+        Role userRole = em.find(Role.class, "user");
+        if (userRole == null) {
+            userRole = new Role("user");
+            em.persist(userRole);
+        }
+        user.addRole(userRole);
+        em.persist(user);
+        em.getTransaction().commit();
+        em.close();
+        return user;
+    }
+    public User verifyUser(String name, String password) throws EntityNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        User user = em.find(User.class, name);
         if (user == null)
-            throw new EntityNotFoundException("No user found with username: " + username);
+            throw new EntityNotFoundException("No user found with name: " + name);
         if (!user.verifyUser(password))
             throw new EntityNotFoundException("Wrong password");
         return user;
@@ -43,17 +60,17 @@ public class UserDAO implements ISecurityDAO{
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         UserDAO dao = new UserDAO(emf);
-        User user = dao.createUser("Bibi", "1234");
+        User user = dao.createUser("4hh", "1234", "fkk@gg.com", 55566633);
 
 //        System.out.println(user.getUsername());
         try {
-            User verifiedUser = dao.verifyUser("Bibi", "1234");
+            User verifiedUser = dao.verifyUser("4hh", "1234");
             System.out.println(verifiedUser.getName());
 
             Role verifiRole= dao.createRole("admin");
 
 
-            User updatedUser = dao.addRoleToUser("Bibi", "admin");
+            User updatedUser = dao.addRoleToUser("Bibi", "instructor");
             System.out.println("Role added to user: " + updatedUser.getName());
         } catch (EntityNotFoundException e) {
             e.printStackTrace();

@@ -21,11 +21,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id", nullable = false, unique = true)
     private int id;
-@Column(name= "username")
+    @Column(name = "username")
     private String name;
-    @Column(name= "password")
+    @Column(name = "password")
     private String password;
+    @Column(name = "email")
     private String email;
+    @Column(name = "phonenumber")
     private int phoneNumber;
 
     @ManyToMany
@@ -33,11 +35,11 @@ public class User {
             joinColumns = @JoinColumn(name = "user_name", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"))
     private Set<Role> roles = new HashSet<>();
-@ManyToMany
-//@JoinTable(name = "user_event",
-//        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-//        inverseJoinColumns = @JoinColumn(name = "event_Title", referencedColumnName = "Title"))
 
+    @ManyToMany
+    @JoinTable(name = "user_events",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "event_id"))
     private Set<Event> events = new HashSet<>();
 
 
@@ -47,7 +49,14 @@ public class User {
         String salt = BCrypt.gensalt();
         this.password = BCrypt.hashpw(password, salt);
     }
-
+    public User(String name, String password, String email, int phoneNumber) {
+        this.name = name;
+        this.password = password;
+        String salt = BCrypt.gensalt();
+        this.password = BCrypt.hashpw(password, salt);
+        this.email= email;
+        this.phoneNumber= phoneNumber;
+    }
     public boolean verifyUser(String password) {
         return BCrypt.checkpw(password, this.password);
     }

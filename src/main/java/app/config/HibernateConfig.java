@@ -6,7 +6,7 @@ import app.model.Role;
 import app.model.User;
 import app.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
-import jdk.jfr.Event;
+import app.model.Event;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

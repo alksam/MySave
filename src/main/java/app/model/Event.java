@@ -25,27 +25,27 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "eventId", nullable = false, unique = true)
+    @Column(name= "event_id", nullable = false, unique = true)
     private int EventId;
-    @Column(name= "Title")
+    @Column(name= "title")
     private String Title;
-    @Column(name= "Description")
+    @Column(name= "description")
     private String Description;
-    @Column(name= "Date")
+    @Column(name= "date")
     private LocalDateTime Date;
-    @Column(name= "Time")
+    @Column(name= "time")
     private LocalTime Time;
-    @Column(name= "Duration")
+    @Column(name= "duration")
     private int Duration;
-    @Column(name= "Capacity")
+    @Column(name= "capacity")
     private int Capacity;
     @Enumerated(EnumType.STRING)
     private Location location;
-    @Column(name= "Instructor")
+    @Column(name= "instructor")
     private String Instructor;
-    @Column(name= "Price")
+    @Column(name= "price")
     private double Price;
-    @Column(name= "Status")
+    @Column(name= "status")
     private String Status;
     @OneToOne
     private Category category;

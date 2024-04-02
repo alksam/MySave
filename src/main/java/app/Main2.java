@@ -28,13 +28,15 @@ User user1 = dao.createUser("ss", "1244");
                 ("Yoga", "Yoga for beginners",
                         LocalDateTime.of(LocalDate.of(2021, 10, 10),
                                 LocalTime.of(10, 0)), LocalTime.of(10, 0),
-                        60, 20, Location.Aalborg, "Yoga instructor", 100,
+                        60, 20, Location.Aalborg, "Bibi", 100,
                         "Active", null);
         Event createdEvent = eventDAO.create(event);
 
         try {
             User verifiedUser = dao.verifyUser("Bibi", "1234");
-            System.out.println(verifiedUser.getName());
+
+            User updatedUser = dao.addRoleToUser("Bibi", "instructor");
+            System.out.println("Role added to user: " + updatedUser.getName());
         } catch (Exception e) {
             e.printStackTrace();
 

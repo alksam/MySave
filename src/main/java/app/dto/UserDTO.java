@@ -20,6 +20,9 @@ public class UserDTO {
 
     private String name;
     private String password;
+    private String email;
+    private int phoneNumber;
+
     private Set<String> roles;
 
     public UserDTO(String name, String password, Set<String> roles) {
@@ -63,5 +66,9 @@ public class UserDTO {
 
     public String getPassword() {
         return password;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
     }
 }
