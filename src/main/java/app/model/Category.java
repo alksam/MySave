@@ -19,5 +19,7 @@ public class Category {
     private int CategoryID;
     @Column(name = "category_name")
     private String CategoryName;
+    @OneToOne(mappedBy = "category")
+    private Event event;
 
 }

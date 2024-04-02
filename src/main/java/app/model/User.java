@@ -31,6 +31,12 @@ public class User {
             joinColumns = @JoinColumn(name = "user_name", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"))
     private Set<Role> roles = new HashSet<>();
+@ManyToMany
+    @JoinTable(name = "user_events",
+            joinColumns = @JoinColumn(name = "user_name", referencedColumnName = "username"),
+            inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "EventId"))
+    private Set<Event> events = new HashSet<>();
+
 
     public User(String name, String password) {
         this.name = name;
@@ -47,11 +53,19 @@ public class User {
         roles.add(role);
         role.getUsers().add(this);
     }
-
     public void removeRole(Role role) {
         roles.remove(role);
         role.getUsers().remove(this);
     }
+    public void addEvent(Event event) {
+        events.add(event);
+        event.getUsers().add(this);
+    }
+    public void removeEvent(Event event) {
+        events.remove(event);
+        event.getUsers().remove(this);
+    }
+
 
     public Set<String> getRolesAsStrings() {
         if (roles.isEmpty()) {
