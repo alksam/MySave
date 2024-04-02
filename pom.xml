@@ -17,7 +17,7 @@
         <issuer>cphbusiness.dk</issuer>
         <token.expiration.time>3600000</token.expiration.time>
         <!--  DB    -->
-        <db.name>hoteldb</db.name>
+        <db.name>securityproject</db.name>
         <db.username>postgres</db.username>
         <db.password>postgres</db.password>
         <db.connection.string>jdbc:postgresql://localhost:5432/</db.connection.string>
