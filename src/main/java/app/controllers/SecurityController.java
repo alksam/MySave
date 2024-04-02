@@ -38,10 +38,10 @@ public class SecurityController implements ISecurityController{
             ObjectNode returnObject = objectMapper.createObjectNode();
             try {
                 UserDTO userInput = ctx.bodyAsClass(UserDTO.class);
-                User created = securityDAO.createUser(userInput.getUsername(), userInput.getPassword());
+                User created = securityDAO.createUser(userInput.getName(), userInput.getPassword());
 
                 String token = createToken(new UserDTO(created));
-                ctx.status(HttpStatus.CREATED).json(new TokenDTO(token, userInput.getUsername()));
+                ctx.status(HttpStatus.CREATED).json(new TokenDTO(token, userInput.getName()));
             } catch (EntityExistsException e) {
                 ctx.status(HttpStatus.UNPROCESSABLE_CONTENT);
                 ctx.json(returnObject.put("msg", "User already exists"));
@@ -56,9 +56,9 @@ public class SecurityController implements ISecurityController{
                 UserDTO user = ctx.bodyAsClass(UserDTO.class);
                 System.out.println("USER IN LOGIN: " + user);
 
-                User verifiedUserEntity = securityDAO.verifyUser(user.getUsername(), user.getPassword());
+                User verifiedUserEntity = securityDAO.verifyUser(user.getName(), user.getPassword());
                 String token = createToken(new UserDTO(verifiedUserEntity));
-                ctx.status(200).json(new TokenDTO(token, user.getUsername()));
+                ctx.status(200).json(new TokenDTO(token, user.getName()));
 
             } catch (EntityNotFoundException | ValidationException e) {
                 ctx.status(401);
@@ -90,9 +90,9 @@ public class SecurityController implements ISecurityController{
         // https://codecurated.com/blog/introduction-to-jwt-jws-jwe-jwa-jwk/
         try {
             JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                    .subject(user.getUsername())
+                    .subject(user.getName())
                     .issuer(ISSUER)
-                    .claim("username", user.getUsername())
+                    .claim("username", user.getName())
                     .claim("roles", user.getRoles().stream().reduce("", (s1, s2) -> s1 + "," + s2))
                     .expirationTime(new Date(new Date().getTime() + Integer.parseInt(TOKEN_EXPIRE_TIME)))
                     .build();

@@ -18,16 +18,19 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
     @Id
-    private String username;
+    private String name;
     private String password;
+    private String email;
+    private int phoneNumber;
+
     @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_name", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String name, String password) {
+        this.name = name;
         this.password = password;
         String salt = BCrypt.gensalt();
         this.password = BCrypt.hashpw(password, salt);

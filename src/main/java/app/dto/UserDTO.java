@@ -18,28 +18,28 @@ import java.util.Set;
 @Setter
 public class UserDTO {
 
-    private String username;
+    private String name;
     private String password;
     private Set<String> roles;
 
-    public UserDTO(String username, String password, Set<String> roles) {
-        this.username = username;
+    public UserDTO(String name, String password, Set<String> roles) {
+        this.name = name;
         this.password = password;
         this.roles = roles;
     }
 
-    public UserDTO(String username, String password) {
-        this.username = username;
+    public UserDTO(String name, String password) {
+        this.name = name;
         this.password = password;
     }
 
     public UserDTO(User user){
-        this.username = user.getUsername();
+        this.name = user.getName();
         this.password = user.getPassword();
         this.roles = user.getRolesAsStrings();
     }
-    public UserDTO(String username, Set<String> roleSet){
-        this.username = username;
+    public UserDTO(String name, Set<String> roleSet){
+        this.name = name;
         this.roles = roleSet;
     }
 
@@ -47,14 +47,14 @@ public class UserDTO {
     public static List<UserDTO> toUserDTOList(List<User> users) {
         List<UserDTO> userDTOList =  new ArrayList<>();
         for (User user : users) {
-            userDTOList.add(new UserDTO(user.getUsername(), user.getRolesAsStrings()));
+            userDTOList.add(new UserDTO(user.getName(), user.getRolesAsStrings()));
         }
         return userDTOList;
 
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public Set<String> getRoles() {

@@ -48,13 +48,13 @@ public class UserDAO implements ISecurityDAO{
 //        System.out.println(user.getUsername());
         try {
             User verifiedUser = dao.verifyUser("Bibi", "1234");
-            System.out.println(verifiedUser.getUsername());
+            System.out.println(verifiedUser.getName());
 
             Role verifiRole= dao.createRole("admin");
 
 
             User updatedUser = dao.addRoleToUser("Bibi", "admin");
-            System.out.println("Role added to user: " + updatedUser.getUsername());
+            System.out.println("Role added to user: " + updatedUser.getName());
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
