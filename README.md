@@ -6,7 +6,10 @@
 
 # Day 1
 Created the EER diagram, GitHub, with branches and KANPAN, 
-and discussed how we should handle the project, and who will do what to begin with
+and discussed how we should handle the project. 
+Where we coded together to do the Event, EventDTO, EventDAO, 
+User, Location and Category classes, and made a quick test 
+of them in a Main2 class we made.
 
 ![img_1.png](img_1.png)
 
