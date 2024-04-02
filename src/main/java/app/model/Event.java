@@ -8,32 +8,33 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-@Entity
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "event")
-
+@Entity
 @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e")
 
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "EventId", nullable = false, unique = true)
+    @Column(name= "eventId", nullable = false, unique = true)
     private int EventId;
     @Column(name= "Title")
     private String Title;
     @Column(name= "Description")
     private String Description;
     @Column(name= "Date")
-    private LocalDate Date;
+    private LocalDateTime Date;
     @Column(name= "Time")
-    private LocalDateTime Time;
+    private LocalTime Time;
     @Column(name= "Duration")
     private int Duration;
     @Column(name= "Capacity")
@@ -48,10 +49,10 @@ public class Event {
     private String Status;
     @OneToOne
     private Category category;
-    @ManyToMany(mappedBy = "events")
+    @ManyToMany
     private  Set <User> users = new HashSet<>();
 
-    public Event(String Title, String Description, LocalDate Date, LocalDateTime Time, int Duration, int Capacity, Location location, String Instructor, double Price, String Status, Category category) {
+    public Event(String Title, String Description, LocalDateTime Date, LocalTime Time, int Duration, int Capacity, Location location, String Instructor, double Price, String Status, Category category) {
         this.Title = Title;
         this.Description = Description;
         this.Date = Date;

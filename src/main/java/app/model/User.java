@@ -21,7 +21,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id", nullable = false, unique = true)
     private int id;
+@Column(name= "username")
     private String name;
+    @Column(name= "password")
     private String password;
     private String email;
     private int phoneNumber;
@@ -32,9 +34,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"))
     private Set<Role> roles = new HashSet<>();
 @ManyToMany
-    @JoinTable(name = "user_events",
-            joinColumns = @JoinColumn(name = "user_name", referencedColumnName = "username"),
-            inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "EventId"))
+//@JoinTable(name = "user_event",
+//        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+//        inverseJoinColumns = @JoinColumn(name = "event_Title", referencedColumnName = "Title"))
+
     private Set<Event> events = new HashSet<>();
 
 
