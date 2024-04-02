@@ -61,10 +61,17 @@ public class Main {
             path("/protected", ()->{
                 before(securityController.authenticate());
                 get("/user",(ctx)->ctx.json(om.createObjectNode().put("msg",  "Hello from USER Protected")),Role.USER);
+                get("instructor",(ctx)->ctx.json(om.createObjectNode().put("msg",  "Hello from INSTRUCTOR Protected")),Role.INSTRUCTOR);
                 get("/admin",(ctx)->ctx.json(om.createObjectNode().put("msg",  "Hello from ADMIN Protected")),Role.ADMIN);
             });
         };
     }
 
-    public enum Role implements RouteRole { ANYONE, USER, ADMIN }
+    public enum Role implements RouteRole {
+        ANYONE,
+        USER,
+        ADMIN,
+        INSTRUCTOR
+
+    }
 }
