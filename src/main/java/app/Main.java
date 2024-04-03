@@ -47,6 +47,7 @@ public class Main {
                 .setRoute(getSecuredRoutes())
                 .setRoute(() -> {
 
+                    getRoutes();
 
                 })
                 .checkSecurityRoles();
@@ -57,8 +58,14 @@ public class Main {
         path("/events", () -> {
             path("/", () -> {
                 before(securityController.authenticate());
-                get("/", eventController.getAllEvents(), Role.USER);
-                get("/{id}", eventController.getEventById(), Role.USER);
+                get("/", eventController.getAllEvents(), Role.ANYONE);
+                get("/{id}", eventController.getEventById(), Role.ANYONE);
+                post("/add", eventController.createEvent(), Role.ANYONE);
+                put("/update/{id}", eventController.updateEvent(),Role.ANYONE);
+                delete("/delete/{id}", eventController.deleteEvent(),Role.ANYONE);
+                get("/error", ctx -> {
+                    throw new Exception(String.valueOf(ApplicationConfig.getInstance().setExceptionHandling()));
+                });
             });
         });
     }
