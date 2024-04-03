@@ -1,8 +1,11 @@
 package app.dao;
 
 import app.model.Event;
+import app.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+
+import java.util.List;
 
 public class EventDAO {
     private static EventDAO instance;
@@ -23,9 +26,9 @@ public EventDAO(EntityManagerFactory _emf) {
     }
     // As a user, I want to see all the events/workshops that are going to be held.
 
-    public Event getAlleEvents( Event event) {
+    public List<Event> getAlleEvents() {
         EntityManager em = emf.createEntityManager();
-        return em.find(Event.class, event);
+        return em.createQuery("SELECT e FROM Event e", Event.class).getResultList();
 
     }
 
@@ -66,6 +69,14 @@ public EventDAO(EntityManagerFactory _emf) {
         em.getTransaction().begin();
         Event event = em.find(Event.class, id);
         em.remove(event);
+        em.getTransaction().commit();
+    }
+
+    public void addUserToEvent(User user, Event createdEvent) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Event event = em.find(Event.class, createdEvent.getEventId());
+        event.addUser(user);
         em.getTransaction().commit();
     }
 }
