@@ -9,6 +9,6 @@ public interface IEventController {
     Handler getAllEvents();
     Handler getEventById();
     Handler createEvent();
-//    Handler updateEvent();
+    Handler updateEvent();
     Handler deleteEvent();
 }

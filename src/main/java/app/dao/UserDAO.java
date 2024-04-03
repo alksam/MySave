@@ -2,10 +2,13 @@ package app.dao;
 
 import app.config.HibernateConfig;
 import app.exceptions.EntityNotFoundException;
+import app.model.Event;
 import app.model.Role;
 import app.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+
+import java.util.List;
 
 public class UserDAO implements ISecurityDAO{
     private EntityManagerFactory emf;
@@ -31,8 +34,7 @@ public class UserDAO implements ISecurityDAO{
         return user;
     }
 
-
-    public User createUser(String username, String password, String email, int phoneNumber) {
+public User UpdateUser(String username, String password) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         User user = new User(username, password);
@@ -42,11 +44,26 @@ public class UserDAO implements ISecurityDAO{
             em.persist(userRole);
         }
         user.addRole(userRole);
-        em.persist(user);
+        em.merge(user);
         em.getTransaction().commit();
         em.close();
         return user;
     }
+
+    public List<User> getAlleUser() {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT e FROM User e", User.class).getResultList();
+
+
+    }
+
+    public User getUserById(int id) {
+        EntityManager em = emf.createEntityManager();
+        return em.find(User.class, id);
+    }
+
+
+
     public User verifyUser(String name, String password) throws EntityNotFoundException {
         EntityManager em = emf.createEntityManager();
         User user = em.find(User.class, name);
@@ -60,7 +77,7 @@ public class UserDAO implements ISecurityDAO{
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         UserDAO dao = new UserDAO(emf);
-        User user = dao.createUser("4hh", "1234", "fkk@gg.com", 55566633);
+        User user = dao.createUser("4hh", "1234");
 
 //        System.out.println(user.getUsername());
         try {

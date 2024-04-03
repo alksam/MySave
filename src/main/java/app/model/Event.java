@@ -68,7 +68,9 @@ public class Event {
         this.category = category;
     }
 
-    public Event(String title, String description, LocalDateTime date, LocalTime time, int duration, int capacity, Location location, String instructor, double price, String status, byte[] image, Category category) {
+    public Event( String title, String description, LocalDateTime date, LocalTime time, int duration, int capacity, Location location, String instructor, double price, String status, byte[] image, Category category) {
+
+
         Title = title;
         Description = description;
         Date = date;

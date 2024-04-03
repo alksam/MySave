@@ -14,7 +14,7 @@ import java.util.Arrays;
 @NoArgsConstructor
 @Setter
 public class EventDTO {
-
+private int EventId;
     private String Title;
     private String Description;
     private LocalDate Date;
@@ -28,7 +28,8 @@ public class EventDTO {
     private String Image;
     private String Status;
 
-    public EventDTO(String title, String description, LocalDate date, LocalDateTime time, int duration, int capacity, Location location, String instructor, double price, Category category, String image, String status) {
+    public EventDTO(int EventId,String title, String description, LocalDate date, LocalDateTime time, int duration, int capacity, Location location, String instructor, double price, Category category, String image, String status) {
+        this.EventId = EventId;
         Title = title;
         Description = description;
         Date = date;
@@ -44,6 +45,7 @@ public class EventDTO {
     }
 
     public EventDTO(Event event) {
+        EventId = event.getEventId();
         Title = event.getTitle();
         Description = event.getDescription();
         Date = LocalDate.from(event.getDate());
