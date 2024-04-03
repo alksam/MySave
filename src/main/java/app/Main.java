@@ -2,6 +2,8 @@ package app;
 
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
+import app.controllers.EventController;
+import app.controllers.IEventController;
 import app.controllers.ISecurityController;
 import app.controllers.SecurityController;
 import app.dao.EventDAO;
@@ -22,9 +24,11 @@ public class Main {
     private static ObjectMapper om = new ObjectMapper();
     private static EventDAO eventDAO= new EventDAO();
     private static IEventHandler eventHandler= new EventHandler();
+    private static IEventController eventController= new EventController(eventDAO);
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         eventDAO = new EventDAO(emf);
+        eventController = new EventController(eventDAO);
         startServer(7007);
 
     }
@@ -48,16 +52,16 @@ public class Main {
                 .checkSecurityRoles();
     }
 
-//    public static void getRoutes(){
-//        before(securityController.authenticate());
-//        path("/events", () -> {
-//            path("/", () -> {
-//                before(securityController.authenticate());
-//                get("/", eventHandler::getAllEvents, Role.USER);
-//                get("/{id}", EventDAO.getInstance(), Role.ADMIN);
-//            });
-//        });
-//    }
+    public static void getRoutes(){
+        before(securityController.authenticate());
+        path("/events", () -> {
+            path("/", () -> {
+                before(securityController.authenticate());
+                get("/", eventController.getAllEvents(), Role.USER);
+                get("/{id}", eventController.getEventById(), Role.USER);
+            });
+        });
+    }
 
     public static void closeServer () {
         ApplicationConfig.getInstance().stopServer();

@@ -16,6 +16,11 @@ import javax.naming.Context;
 public class EventController implements IEventController{
     EventDAO eventDAO = new EventDAO();
     ObjectMapper objectMapper = new ObjectMapper();
+
+    public EventController(EventDAO eventDAO) {
+        this.eventDAO = eventDAO;
+    }
+
     @Override
     public Handler getAllEvents() {
         return (ctx) -> {

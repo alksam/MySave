@@ -25,12 +25,16 @@ import static org.junit.Assert.assertNotNull;
 class EventControllerTest {
     private static EntityManagerFactory emf;
     private static EventDAO eventDAO;
+
+    private static IEventController eventController;
     @BeforeAll
     static void setUp() {
         emf = HibernateConfig.getEntityManagerFactoryForTest();
         eventDAO = new EventDAO(emf);
+        eventController= new EventController(eventDAO);
 
     }
+
 
     @AfterEach
     void tearDown() {
@@ -39,7 +43,7 @@ class EventControllerTest {
     @Test
     void getAllEvents() {
 
-        List<Event> events = eventDAO.getAlleEvents();
+        List<Event> events = (List<Event>) eventController.getAllEvents();
         Assertions.assertNotNull(String.valueOf(events));
         assertTrue(!events.isEmpty(), "The list of events should not be empty");
 
@@ -69,12 +73,10 @@ class EventControllerTest {
         newEvent.setStatus("Scheduled");
 
         Event createdEvent = eventDAO.create(newEvent);
-
-        // Perform assertions to verify the event was created as expected
         assertNotNull(createdEvent);
-        assertNotNull(createdEvent.getEventId()); // Assuming getEventId() returns the auto-generated ID
+        assertNotNull(createdEvent.getEventId());
         assertEquals("Yoga Class", createdEvent.getTitle());
-        // Add more assertions as needed
+
     }
 
 
@@ -84,5 +86,9 @@ class EventControllerTest {
 
     @Test
     void deleteEvent() {
+
+        eventDAO.delete(1);
+
+
     }
 }
