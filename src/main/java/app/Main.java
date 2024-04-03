@@ -4,6 +4,10 @@ import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
 import app.controllers.ISecurityController;
 import app.controllers.SecurityController;
+import app.dao.EventDAO;
+import app.handler.EventHandler;
+import app.handler.IEventHandler;
+import app.model.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.security.RouteRole;
@@ -16,8 +20,11 @@ public class Main {
 
     private static ISecurityController securityController = new SecurityController();
     private static ObjectMapper om = new ObjectMapper();
+    private static EventDAO eventDAO= new EventDAO();
+    private static IEventHandler eventHandler= new EventHandler();
     public static void main(String[] args) {
-
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        eventDAO = new EventDAO(emf);
         startServer(7007);
 
     }
@@ -41,6 +48,16 @@ public class Main {
                 .checkSecurityRoles();
     }
 
+//    public static void getRoutes(){
+//        before(securityController.authenticate());
+//        path("/events", () -> {
+//            path("/", () -> {
+//                before(securityController.authenticate());
+//                get("/", eventHandler::getAllEvents, Role.USER);
+//                get("/{id}", EventDAO.getInstance(), Role.ADMIN);
+//            });
+//        });
+//    }
 
     public static void closeServer () {
         ApplicationConfig.getInstance().stopServer();

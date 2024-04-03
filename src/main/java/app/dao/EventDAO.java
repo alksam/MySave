@@ -10,14 +10,14 @@ import java.util.List;
 public class EventDAO {
     private static EventDAO instance;
     private static EntityManagerFactory emf;
-public EventDAO(EntityManagerFactory _emf) {
-        this.emf = _emf;
+public EventDAO(EntityManagerFactory emf) {
+        this.emf = emf;
     }
 
-    public static EventDAO getInstance(EntityManagerFactory _emf) {
+    public static EventDAO getInstance(EntityManagerFactory emf) {
         if (instance == null) {
-            emf = _emf;
-            instance = new EventDAO(emf);
+            EventDAO.emf = emf;
+            instance = new EventDAO(EventDAO.emf);
         }
         return instance;
     }
