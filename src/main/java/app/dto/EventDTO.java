@@ -4,10 +4,12 @@ package app.dto;
 import app.model.Category;
 import app.model.Event;
 import app.model.Location;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 @Getter
@@ -17,8 +19,10 @@ public class EventDTO {
 private int EventId;
     private String Title;
     private String Description;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate Date;
-    private LocalDateTime Time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    private LocalTime Time;
     private int Duration;
     private int Capacity;
     private Location location;
@@ -28,8 +32,8 @@ private int EventId;
     //private String Image;
     private String Status;
 
-    public EventDTO(int EventId,String title, String description, LocalDate date, LocalDateTime time, int duration, int capacity, Location location, String instructor, double price, Category category, String image, String status) {
-        this.EventId = EventId;
+    public EventDTO(int eventId, String title, String description, LocalDate date, LocalTime time, int duration, int capacity, Location location, String instructor, double price, Category category, String status) {
+        EventId = eventId;
         Title = title;
         Description = description;
         Date = date;
@@ -40,7 +44,6 @@ private int EventId;
         Instructor = instructor;
         Price = price;
         this.category = category;
-        //Image = image;
         Status = status;
     }
 
@@ -49,7 +52,7 @@ private int EventId;
         Title = event.getTitle();
         Description = event.getDescription();
         Date = LocalDate.from(event.getDate());
-        Time = LocalDateTime.from(event.getTime());
+        Time = LocalTime.from(event.getTime());
         Duration = event.getDuration();
         Capacity = event.getCapacity();
         this.location = event.getLocation();

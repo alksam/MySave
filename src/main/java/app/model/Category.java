@@ -1,10 +1,11 @@
 package app.model;
 
+import app.model.Event;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Set;
 
 @Table(name = "categories")
 @Getter
@@ -16,10 +17,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", nullable = false, unique = true)
-    private int CategoryID;
-    @Column(name = "category_name")
-    private String CategoryName;
-    @OneToOne(mappedBy = "category")
-    private Event event;
+    private int categoryID;
 
+    @Column(name = "category_name")
+    private String categoryName;
+
+    @OneToMany
+    private Set<Event> eventSet;
 }

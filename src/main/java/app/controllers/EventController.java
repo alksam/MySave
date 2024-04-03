@@ -1,13 +1,15 @@
 package app.controllers;
 
+import app.dao.CategoryDAO;
 import app.dao.EventDAO;
 import app.dto.EventDTO;
+import app.functionallity.EventFunctionality;
 import app.model.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.Handler;
-
+import jakarta.persistence.EntityManager;
 
 
 import javax.naming.Context;
@@ -16,6 +18,8 @@ import javax.naming.Context;
 public class EventController implements IEventController{
     EventDAO eventDAO = new EventDAO();
     ObjectMapper objectMapper = new ObjectMapper();
+
+    EventFunctionality eventFunctionality= new EventFunctionality();
 
     public EventController(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
@@ -57,15 +61,34 @@ public class EventController implements IEventController{
         return (ctx) -> {
             ObjectNode returnObject = objectMapper.createObjectNode();
             try {
+                // Parse the incoming JSON to an EventDTO
                 EventDTO eventInput = ctx.bodyAsClass(EventDTO.class);
-                Event created = eventDAO.create(eventInput.getCategory().getEvent());
-                ctx.status(HttpStatus.CREATED).json(new EventDTO(created));
+
+                // Convert EventDTO to Event entity
+                Event eventToCreate = convertToEntity(eventInput);
+
+                // Create the event in the database
+                Event createdEvent = eventDAO.create(eventToCreate);
+
+                // Convert the created Event back to EventDTO for response
+                EventDTO createdEventDTO = new EventDTO(createdEvent);
+
+
+                // Set status as CREATED and return the created event
+                ctx.status(HttpStatus.CREATED).json(createdEventDTO);
             } catch (Exception e) {
-                ctx.status(500);
-                ctx.json(returnObject.put("msg", "Internal server error"));
+
+                e.printStackTrace();
+                ctx.status(500).json(returnObject.put("msg", "Internal server error: " + e.getMessage()));
             }
         };
     }
+
+    private Event convertToEntity(EventDTO eventDTO) {
+
+        return new Event(eventDTO);
+    }
+
 
     @Override
     public Handler updateEvent() {

@@ -18,10 +18,10 @@ public class UserDAO implements ISecurityDAO{
     }
 
     @Override
-    public User createUser(String username, String password) {
+    public User createUser(String name, String password, String email, int phoneNumber) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        User user = new User(username, password);
+        User user = new User(name, password, email, phoneNumber);
         Role userRole = em.find(Role.class, "user");
         if (userRole == null) {
             userRole = new Role("user");
@@ -34,10 +34,10 @@ public class UserDAO implements ISecurityDAO{
         return user;
     }
 
-public User UpdateUser(String username, String password) {
+    public User UpdateUser(String name, String password) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        User user = new User(username, password);
+        User user = new User(name, password);
         Role userRole = em.find(Role.class, "user");
         if (userRole == null) {
             userRole = new Role("user");
@@ -50,12 +50,22 @@ public User UpdateUser(String username, String password) {
         return user;
     }
 
+    public User update(User user){
+
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(user);
+        em.getTransaction().commit();
+        return user;
+    }
+
+
     public List<User> getAlleUser() {
         EntityManager em = emf.createEntityManager();
-        return em.createQuery("SELECT e FROM User e", User.class).getResultList();
-
+            return em.createQuery("SELECT u FROM User u", User.class).getResultList();
 
     }
+
 
     public User getUserById(int id) {
         EntityManager em = emf.createEntityManager();
@@ -77,7 +87,7 @@ public User UpdateUser(String username, String password) {
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         UserDAO dao = new UserDAO(emf);
-        User user = dao.createUser("4hh", "1234");
+        User user = dao.createUser("4hh", "1234", "fff@r.com", 55456633);
 
 //        System.out.println(user.getUsername());
         try {
@@ -120,14 +130,14 @@ public User UpdateUser(String username, String password) {
 
 
     @Override
-    public User addRoleToUser(String username, String roleName) {
+    public User addRoleToUser(String name, String roleName) {
 
         EntityManager em = emf.createEntityManager();
 
         User user;
         try {
             em.getTransaction().begin();
-           user= em.find(User.class, username);
+           user= em.find(User.class, name);
            Role role= em.find(Role.class, roleName);
 
             user.addRole(role); // Modify the collection in the managed entity
@@ -145,4 +155,13 @@ public User UpdateUser(String username, String password) {
         return user;
 
     }
+
+    public void deleteUser(int id) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        User user = em.find(User.class, id);
+        em.remove(user);
+        em.getTransaction().commit();
+    }
+
 }

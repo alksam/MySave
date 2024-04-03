@@ -1,5 +1,6 @@
 package app.model;
 
+import app.dto.EventDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,7 +50,7 @@ public class Event {
 //    @Lob // This annotation is used to specify that the column should be treated as a Large Object
 //    @Column(name = "image", columnDefinition = "bytea", nullable = true) // For PostgreSQL, bytea type is used to store binary data
 //    private byte[] image;
-    @OneToOne
+    @ManyToOne
     private Category category;
     @ManyToMany
     private  Set <User> users = new HashSet<>();
@@ -92,5 +93,20 @@ public class Event {
     public void removeUser(User user) {
         users.remove(user);
         user.getEvents().remove(this);
+    }
+
+    public Event(EventDTO eventDTO) {
+        this.EventId = eventDTO.getEventId();
+        this.Title = eventDTO.getTitle();
+        this.Description = eventDTO.getDescription();
+        this.Date = LocalDate.from(eventDTO.getDate()).atStartOfDay();
+        this.Time = eventDTO.getTime();
+        this.Duration = eventDTO.getDuration();
+        this.Capacity = eventDTO.getCapacity();
+        this.location = eventDTO.getLocation();
+        this.Instructor = eventDTO.getInstructor();
+        this.Price = eventDTO.getPrice();
+        this.Status = eventDTO.getStatus();
+        this.category = eventDTO.getCategory();
     }
 }

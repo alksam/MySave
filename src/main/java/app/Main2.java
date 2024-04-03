@@ -20,8 +20,8 @@ public class Main2 {
         UserDAO dao = new UserDAO(emf);
         EventDAO eventDAO = new EventDAO(emf);
 
-User user1 = dao.createUser("ss", "1244");
-        User user = dao.createUser("Bibi", "1234");
+User user1 = dao.createUser("f", "1244", "gg@ddddd.dk", 5533112);
+        User user = dao.createUser("ffhhf", "1234", "aaa@g.dk", 44545256);
 
         System.out.println(user.getName());
         Event event = new Event
@@ -33,9 +33,9 @@ User user1 = dao.createUser("ss", "1244");
         Event createdEvent = eventDAO.create(event);
 
         try {
-            User verifiedUser = dao.verifyUser("Bibi", "1234");
+            User verifiedUser = dao.verifyUser("fhhff", "1234");
 
-            User updatedUser = dao.addRoleToUser("Bibi", "instructor");
+            User updatedUser = dao.addRoleToUser("fhhff", "instructor");
             System.out.println("Role added to user: " + updatedUser.getName());
         } catch (Exception e) {
             e.printStackTrace();

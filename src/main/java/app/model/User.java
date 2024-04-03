@@ -32,7 +32,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "user_name", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"))
     private Set<Role> roles = new HashSet<>();
 

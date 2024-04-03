@@ -2,14 +2,10 @@ package app;
 
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
-import app.controllers.EventController;
-import app.controllers.IEventController;
-import app.controllers.ISecurityController;
-import app.controllers.SecurityController;
+import app.controllers.*;
 import app.dao.EventDAO;
-import app.handler.EventHandler;
-import app.handler.IEventHandler;
-import app.model.Event;
+;
+import app.dao.UserDAO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.security.RouteRole;
@@ -23,13 +19,18 @@ public class Main {
     private static ISecurityController securityController = new SecurityController();
     private static ObjectMapper om = new ObjectMapper();
     private static EventDAO eventDAO= new EventDAO();
-    private static IEventHandler eventHandler= new EventHandler();
     private static IEventController eventController= new EventController(eventDAO);
+    private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+
+    private static UserDAO userDAO= new UserDAO(emf);
+    private static IUserController userController= new UserController(userDAO);
+
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         eventDAO = new EventDAO(emf);
         eventController = new EventController(eventDAO);
         startServer(7007);
+        userController= new UserController(userDAO);
 
     }
 
@@ -46,8 +47,9 @@ public class Main {
                 .setupAccessManager()
                 .setRoute(getSecuredRoutes())
                 .setRoute(() -> {
-
+                    getUserRoutes();
                     getRoutes();
+
 
                 })
                 .checkSecurityRoles();
@@ -60,14 +62,31 @@ public class Main {
                 before(securityController.authenticate());
                 get("/", eventController.getAllEvents(), Role.ANYONE);
                 get("/{id}", eventController.getEventById(), Role.ANYONE);
-                post("/add", eventController.createEvent(), Role.ANYONE);
-                put("/update/{id}", eventController.updateEvent(),Role.ANYONE);
-                delete("/delete/{id}", eventController.deleteEvent(),Role.ANYONE);
+                post("/create", eventController.createEvent(), Role.ANYONE);
+                put("/update/{id}", eventController.updateEvent(), Role.ANYONE);
+                delete("/delete/{id}", eventController.deleteEvent(), Role.ANYONE);
                 get("/error", ctx -> {
                     throw new Exception(String.valueOf(ApplicationConfig.getInstance().setExceptionHandling()));
                 });
             });
+    });
+    }
+
+    public static void getUserRoutes(){
+        before(securityController.authenticate());
+        path("/user", () -> {
+            path("/", () -> {
+            before(securityController.authenticate());
+            get("/all", userController.getAllUsers(), Role.ANYONE);
+            get("/{id}", userController.getUserById(), Role.ANYONE);
+            post("/create", userController.createUser(), Role.ANYONE);
+            put("/update/{id}", userController.updateUser(), Role.ANYONE);
+            delete("/delete/{id}", userController.deleteUser(), Role.ANYONE);
+            get("/error", ctx -> {
+                throw new Exception(String.valueOf(ApplicationConfig.getInstance().setExceptionHandling()));
+            });
         });
+    });
     }
 
     public static void closeServer () {
