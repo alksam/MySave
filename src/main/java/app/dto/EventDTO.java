@@ -25,7 +25,7 @@ private int EventId;
     private String Instructor;
     private double Price;
     private Category category;
-    private String Image;
+    //private String Image;
     private String Status;
 
     public EventDTO(int EventId,String title, String description, LocalDate date, LocalDateTime time, int duration, int capacity, Location location, String instructor, double price, Category category, String image, String status) {
@@ -40,7 +40,7 @@ private int EventId;
         Instructor = instructor;
         Price = price;
         this.category = category;
-        Image = image;
+        //Image = image;
         Status = status;
     }
 
@@ -56,7 +56,7 @@ private int EventId;
         Instructor = event.getInstructor();
         Price = event.getPrice();
         this.category = event.getCategory();
-        Image = Arrays.toString(event.getImage());
+        //Image = Arrays.toString(event.getImage());
         Status = event.getStatus();
     }
 }
