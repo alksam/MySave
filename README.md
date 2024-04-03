@@ -13,6 +13,8 @@ of them in a Main2 class we made.
 
 ![img_1.png](img_1.png)
 
+![img.png](img.png)
+
 # User stories
 ### Student Stories
 
