@@ -10,9 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.Handler;
 import jakarta.persistence.EntityManager;
-
-
-import javax.naming.Context;
+import jakarta.persistence.EntityManagerFactory;
 
 
 public class EventController implements IEventController{

@@ -2,33 +2,50 @@ package app.controllers;
 
 import app.config.HibernateConfig;
 import app.dao.UserDAO;
+import app.dao.UserDAO2;
+import app.dto.EventDTO;
 import app.dto.UserDTO;
+import app.functionallity.UserFunctionality;
+import app.model.Event;
 import app.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.http.Handler;
+import io.javalin.http.HttpStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserController implements IUserController{
 
-    UserDAO userDAO = new UserDAO(HibernateConfig.getEntityManagerFactory());
+    UserDAO2 userDAO = new UserDAO2();
     ObjectMapper objectMapper = new ObjectMapper();
-    //UserDTO userDTO= new UserDTO();
-   // User user= new User();
+
+UserFunctionality userFunctionality = new UserFunctionality();
 
 
-    public UserController(UserDAO userDAO) {
+    public UserController(UserDAO2 userDAO) {
         this.userDAO = userDAO;
+    }
+
+    private User convertToEntity(UserDTO userDTO) {
+
+        return new User(userDTO);
     }
 
     @Override
     public Handler getAllUsers() {
         return (ctx) -> {
-            ObjectNode returnObject = objectMapper.createObjectNode();
             try {
-                ctx.json(userDAO.getAlleUser());
+                List<User> users = userDAO.getAlleUser();
+                List<UserDTO> userDTOs = new ArrayList<>();
+                for (User user : users) {
+                    userDTOs.add(userFunctionality.convertToDTO(user));
+                }
+                ctx.json(userDTOs);
             } catch (Exception e) {
                 ctx.status(500);
-                ctx.json(returnObject.put("msg", "Internal server error"));
+                ctx.json("Internal server error");
             }
         };
     }
@@ -39,7 +56,9 @@ public class UserController implements IUserController{
             UserDTO userDTO = ctx.bodyAsClass(UserDTO.class);
 
             try {
-                User newUser = userDAO.createUser(userDTO.getName(), userDTO.getPassword(),userDTO.getEmail(), userDTO.getPhoneNumber());
+                User userToCreate = convertToEntity(userDTO);
+
+                User newUser = userDAO.create(userToCreate);
                 ctx.status(201);
                 ctx.json(newUser);
             } catch (Exception e) {
@@ -48,6 +67,10 @@ public class UserController implements IUserController{
                 ctx.json("Internal server error");
             }
         };
+
+
+
+
     }
 
     @Override
@@ -56,7 +79,10 @@ public class UserController implements IUserController{
             ObjectNode returnObject = objectMapper.createObjectNode();
             try {
                 int id = Integer.parseInt(ctx.pathParam("id"));
-                ctx.json(userDAO.getUserById(id));
+                User  userbyid = userDAO.getUserById(id);
+                UserDTO userDTO = userFunctionality.convertToDTO(userbyid);
+                ctx.json(userDTO);
+
             } catch (Exception e) {
                 ctx.status(500);
                 ctx.json(returnObject.put("msg", "Internal server error"));
@@ -64,31 +90,32 @@ public class UserController implements IUserController{
         };
     }
 
+
     @Override
     public Handler updateUser() {
         return (ctx) -> {
-
-            UserDTO userDTO = ctx.bodyAsClass(UserDTO.class);
-
             int userId = Integer.parseInt(ctx.pathParam("id"));
-
+            UserDTO userDTO = ctx.bodyAsClass(UserDTO.class);
             try {
                 User userToUpdate = userDAO.getUserById(userId);
-
-
-                userToUpdate.setName(userDTO.getName());
-                userToUpdate.setEmail(userDTO.getEmail());
-                userToUpdate.setPassword(userDTO.getPassword());
-
-                User updatedUser = userDAO.update(userToUpdate);
-                ctx.json(updatedUser);
-            }catch (Exception e) {
-
+                if (userToUpdate != null) {
+                    userToUpdate.setName(userDTO.getName());
+                    userToUpdate.setEmail(userDTO.getEmail());
+                    userToUpdate.setPassword(userDTO.getPassword());
+                    User updatedUser = userDAO.update(userToUpdate);
+                    ctx.json(updatedUser);
+                } else {
+                    ctx.status(404);
+                    ctx.json("User not found");
+                }
+            } catch (Exception e) {
                 ctx.status(500);
                 ctx.json("Internal server error");
             }
         };
     }
+
+
 
     @Override
     public Handler deleteUser() {

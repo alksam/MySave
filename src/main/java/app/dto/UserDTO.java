@@ -24,11 +24,13 @@ public class UserDTO {
     private int phoneNumber;
 
     private Set<String> roles;
+    private Set<String> events;
 
-    public UserDTO(String name, String password, Set<String> roles) {
+    public UserDTO(String name, String password, Set<String> roles , Set<String> events) {
         this.name = name;
         this.password = password;
         this.roles = roles;
+        this.events = events;
     }
 
     public UserDTO(String name, String password, String email, int phoneNumber) {

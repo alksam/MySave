@@ -1,4 +1,4 @@
-GET http://localhost:7007/api/events/
+GET http://localhost:7007/api/events
 
 ###
 
@@ -49,29 +49,30 @@ DELETE http://localhost:7007/api/events/delete/7
 
 ###
 
-GET http://localhost:7007/api/user/all
+GET http://localhost:7007/api/users/all
 
 ###
 
-GET http://localhost:7007/api/user/6
+GET http://localhost:7007/api/users/1
 
 ###
 
-POST http://localhost:7007/api/user/create
+POST http://localhost:7007/api/users/create
 
 {
 "name": "Flem",
 "password": "66655",
 "email": "vvvv@hhhh.com",
 "phoneNumber": 55444422
+
 }
 
 ###
 
-DELETE http://localhost:7007/api/user/1
+DELETE http://localhost:7007/api/users/delete/1
 
 
 ###
 
 
-DELETE http://localhost:7007/api/events/delete/6
+

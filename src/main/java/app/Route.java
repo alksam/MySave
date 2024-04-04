@@ -6,6 +6,7 @@ import app.controllers.*;
 import app.dao.EventDAO;
 ;
 import app.dao.UserDAO;
+import app.dao.UserDAO2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.security.RouteRole;
@@ -14,7 +15,7 @@ import jakarta.persistence.EntityManagerFactory;
 import static io.javalin.apibuilder.ApiBuilder.*;
 import static io.javalin.apibuilder.ApiBuilder.get;
 
-public class Main {
+public class Route {
 
     private static ISecurityController securityController = new SecurityController();
     private static ObjectMapper om = new ObjectMapper();
@@ -22,15 +23,16 @@ public class Main {
     private static IEventController eventController= new EventController(eventDAO);
     private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
-    private static UserDAO userDAO= new UserDAO(emf);
-    private static IUserController userController= new UserController(userDAO);
+    private static UserDAO2 dao= new UserDAO2(emf);
+    private static UserDAO userDAO = new UserDAO(emf);
+    private static IUserController userController= new UserController(dao);
 
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         eventDAO = new EventDAO(emf);
         eventController = new EventController(eventDAO);
         startServer(7007);
-        userController= new UserController(userDAO);
+        userController= new UserController(dao);
 
     }
 
@@ -46,20 +48,15 @@ public class Main {
                 .setRoute(getSecurityRoutes())
                 .setupAccessManager()
                 .setRoute(getSecuredRoutes())
-                .setRoute(() -> {
-                    getUserRoutes();
-                    getRoutes();
-
-
-                })
+                .setRoute(getRoutes())
+                .setRoute(getUserRoutes())
                 .checkSecurityRoles();
     }
 
-    public static void getRoutes(){
-        before(securityController.authenticate());
-        path("/events", () -> {
-            path("/", () -> {
-                before(securityController.authenticate());
+    public static EndpointGroup getRoutes() {
+        return () -> {
+            before(securityController.authenticate());
+            path("/events", () -> {
                 get("/", eventController.getAllEvents(), Role.ANYONE);
                 get("/{id}", eventController.getEventById(), Role.ANYONE);
                 post("/create", eventController.createEvent(), Role.ANYONE);
@@ -68,25 +65,25 @@ public class Main {
                 get("/error", ctx -> {
                     throw new Exception(String.valueOf(ApplicationConfig.getInstance().setExceptionHandling()));
                 });
+
             });
-    });
+        };
     }
 
-    public static void getUserRoutes(){
-        before(securityController.authenticate());
-        path("/user", () -> {
-            path("/", () -> {
-            before(securityController.authenticate());
-            get("/all", userController.getAllUsers(), Role.ANYONE);
-            get("/{id}", userController.getUserById(), Role.ANYONE);
-            post("/create", userController.createUser(), Role.ANYONE);
-            put("/update/{id}", userController.updateUser(), Role.ANYONE);
-            delete("/delete/{id}", userController.deleteUser(), Role.ANYONE);
-            get("/error", ctx -> {
-                throw new Exception(String.valueOf(ApplicationConfig.getInstance().setExceptionHandling()));
-            });
-        });
-    });
+    public static EndpointGroup getUserRoutes(){
+       return()-> {
+
+           path("/users", () -> {
+               get("/all", userController.getAllUsers(), Role.ANYONE);
+               get("/{id}", userController.getUserById(), Role.ANYONE);
+               post("/create", userController.createUser(), Role.ANYONE);
+               put("/update/{id}", userController.updateUser(), Role.ANYONE);
+               delete("/delete/{id}", userController.deleteUser(), Role.ANYONE);
+               get("/error", ctx -> {
+                   throw new Exception(String.valueOf(ApplicationConfig.getInstance().setExceptionHandling()));
+               });
+           });
+       };
     }
 
     public static void closeServer () {

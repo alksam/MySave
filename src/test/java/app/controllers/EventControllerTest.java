@@ -1,5 +1,6 @@
 package app.controllers;
 
+
 import app.dao.EventDAO;
 import app.model.Event;
 import app.model.Location;
@@ -33,7 +34,7 @@ class EventControllerTest {
         eventDAO = new EventDAO(emf);
         eventController= new EventController(eventDAO);
 
-    }
+ }
 
 
     @AfterEach

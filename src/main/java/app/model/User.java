@@ -1,5 +1,6 @@
 package app.model;
 
+import app.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,6 +58,16 @@ public class User {
         this.email= email;
         this.phoneNumber= phoneNumber;
     }
+
+    public User(UserDTO userDTO) {
+        this.name = userDTO.getName();
+        this.password = userDTO.getPassword();
+        String salt = BCrypt.gensalt();
+        this.password = BCrypt.hashpw(userDTO.getPassword(), salt);
+        this.email= userDTO.getEmail();
+        this.phoneNumber= userDTO.getPhoneNumber();
+    }
+
     public boolean verifyUser(String password) {
         return BCrypt.checkpw(password, this.password);
     }

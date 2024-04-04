@@ -50,27 +50,12 @@ public class UserDAO implements ISecurityDAO{
         return user;
     }
 
-    public User update(User user){
-
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(user);
-        em.getTransaction().commit();
-        return user;
-    }
 
 
-    public List<User> getAlleUser() {
-        EntityManager em = emf.createEntityManager();
-            return em.createQuery("SELECT u FROM User u", User.class).getResultList();
-
-    }
 
 
-    public User getUserById(int id) {
-        EntityManager em = emf.createEntityManager();
-        return em.find(User.class, id);
-    }
+
+
 
 
 
@@ -156,12 +141,6 @@ public class UserDAO implements ISecurityDAO{
 
     }
 
-    public void deleteUser(int id) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        User user = em.find(User.class, id);
-        em.remove(user);
-        em.getTransaction().commit();
-    }
+
 
 }

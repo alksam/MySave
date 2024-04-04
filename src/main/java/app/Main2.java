@@ -3,6 +3,7 @@ package app;
 import app.config.HibernateConfig;
 import app.dao.EventDAO;
 import app.dao.UserDAO;
+import app.dao.UserDAO2;
 import app.model.Event;
 import app.model.Location;
 import app.model.User;
@@ -17,11 +18,14 @@ public class Main2 {
 
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        UserDAO dao = new UserDAO(emf);
+        UserDAO2 dao = new UserDAO2(emf);
         EventDAO eventDAO = new EventDAO(emf);
+        UserDAO userDAO = new UserDAO(emf);
+        User user2 = new User("scsac", "1234", "ggg@df", 5533112);
 
-User user1 = dao.createUser("f", "1244", "gg@ddddd.dk", 5533112);
-        User user = dao.createUser("ffhhf", "1234", "aaa@g.dk", 44545256);
+        User user3 = new User("fhhffsfff", "1234", "ggg@dff", 5533112);
+        User user1 = dao.create(user2);
+        User user = dao.create(user3);
 
         System.out.println(user.getName());
         Event event = new Event
@@ -33,9 +37,9 @@ User user1 = dao.createUser("f", "1244", "gg@ddddd.dk", 5533112);
         Event createdEvent = eventDAO.create(event);
 
         try {
-            User verifiedUser = dao.verifyUser("fhhff", "1234");
+            User verifiedUser = userDAO.verifyUser("fhhff", "1234");
 
-            User updatedUser = dao.addRoleToUser("fhhff", "instructor");
+            User updatedUser = userDAO.addRoleToUser("fhhff", "instructor");
             System.out.println("Role added to user: " + updatedUser.getName());
         } catch (Exception e) {
             e.printStackTrace();

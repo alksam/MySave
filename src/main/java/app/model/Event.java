@@ -69,22 +69,6 @@ public class Event {
         this.category = category;
     }
 
-//    public Event( String title, String description, LocalDateTime date, LocalTime time, int duration, int capacity, Location location, String instructor, double price, String status, byte[] image, Category category) {
-//
-//
-//        Title = title;
-//        Description = description;
-//        Date = date;
-//        Time = time;
-//        Duration = duration;
-//        Capacity = capacity;
-//        this.location = location;
-//        Instructor = instructor;
-//        Price = price;
-//        Status = status;
-//        this.image = image;
-//        this.category = category;
-//    }
 
     public void addUser(User user) {
         users.add(user);

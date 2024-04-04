@@ -1,6 +1,6 @@
 package app.config;
 
-import app.Main;
+import app.Route;
 import app.controllers.ISecurityController;
 import app.controllers.SecurityController;
 import app.dto.UserDTO;
@@ -87,7 +87,7 @@ public class ApplicationConfig {
     public ApplicationConfig setupAccessManager() {
         AccessManager accessManager = (handler, ctx, permittedRoles) -> {
             // Check if the route is accessible to anyone without authentication
-            if (permittedRoles.contains(Main.Role.ANYONE)) {
+            if (permittedRoles.contains(Route.Role.ANYONE)) {
                 handler.handle(ctx);
                 return;
             }
