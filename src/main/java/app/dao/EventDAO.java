@@ -72,11 +72,36 @@ public EventDAO(EntityManagerFactory emf) {
         em.getTransaction().commit();
     }
 
-    public void addUserToEvent(User user, Event createdEvent) {
+    public void addUserToEvent(User user, int createdEvent) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Event event = em.find(Event.class, createdEvent.getEventId());
         event.addUser(user);
         em.getTransaction().commit();
     }
+
+    public void removeUserFromEvent(User user, Event createdEvent) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Event event = em.find(Event.class, createdEvent.getEventId());
+        event.removeUser(user);
+        em.getTransaction().commit();
+    }
+
+    public User getUsersForEvent(Event event , User user) {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT u FROM User u JOIN u.events e WHERE e.EventId = :eventId", User.class)
+                .setParameter("eventId", event.getEventId())
+                .getSingleResult();
+    }
+
+    public User getAllRegistereUsers(User user, Event event) {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT u FROM User u JOIN u.events e WHERE e.EventId = :eventId", User.class)
+                .setParameter("eventId", event.getEventId())
+                .getSingleResult();
+
+
+    }
+
 }

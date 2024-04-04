@@ -5,6 +5,7 @@ import app.dao.EventDAO;
 import app.dto.EventDTO;
 import app.functionallity.EventFunctionality;
 import app.model.Event;
+import app.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.http.HttpStatus;
@@ -120,4 +121,6 @@ public class EventController implements IEventController{
             }
         };
     }
+
+
 }

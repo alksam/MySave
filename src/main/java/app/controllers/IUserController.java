@@ -11,5 +11,10 @@ public interface IUserController {
 
     Handler deleteUser();
 
+    Handler addUserToEvent();
+    Handler removeUserFromEvent();
+    Handler getUsersForEvent();
+
+    Handler getAllRegistereUsers();
 
 }

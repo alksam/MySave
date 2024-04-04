@@ -133,4 +133,24 @@ UserFunctionality userFunctionality = new UserFunctionality();
         };
     }
 
+    @Override
+    public Handler addUserToEvent() {
+        return null;
+    }
+
+    @Override
+    public Handler removeUserFromEvent() {
+        return null;
+    }
+
+    @Override
+    public Handler getUsersForEvent() {
+        return null;
+    }
+
+    @Override
+    public Handler getAllRegistereUsers() {
+        return null;
+    }
+
 }
