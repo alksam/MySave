@@ -5,9 +5,7 @@ import app.dto.EventDTO;
 import app.model.Category;
 import app.model.Event;
 
-
 public class EventFunctionality {
-
     private static CategoryDAO categoryDAO;
 
     public Event convertToEntity(EventDTO eventDTO) {
@@ -33,5 +31,4 @@ public class EventFunctionality {
 
         return event;
     }
-
 }

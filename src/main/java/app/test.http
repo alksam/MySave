@@ -24,7 +24,7 @@ POST http://localhost:7007/api/events/create
 }
 
 
-###
+### virker ikke
 
 PUT http://localhost:7007/api/events/update/6
 
@@ -42,18 +42,18 @@ PUT http://localhost:7007/api/events/update/6
 
 
 
-###
+###virkker ikke
 
 DELETE http://localhost:7007/api/events/delete/7
 
 
-###
+### users
 
 GET http://localhost:7007/api/users/all
 
 ###
 
-GET http://localhost:7007/api/users/1
+GET http://localhost:7007/api/users/2
 
 ###
 
@@ -67,12 +67,28 @@ POST http://localhost:7007/api/users/create
 
 }
 
-###
+### vikker ikke
 
 DELETE http://localhost:7007/api/users/delete/1
 
 
+### register
+
+GET http://localhost:7007/api/register/all
+
 ###
+
+GET http://localhost:7007/api/register/3
+
+###
+
+POST http://localhost:7007/api/register/create/2/1
+
+
+### virker ikke
+
+DELETE http://localhost:7007/api/register/delete/1/2
+
 
 
 

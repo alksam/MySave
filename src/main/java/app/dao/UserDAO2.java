@@ -74,13 +74,13 @@ public class UserDAO2 {
         em.remove(user);
         em.getTransaction().commit();
     }
-    public void AddEventToUser(int userId, int eventId) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        User user = em.find(User.class, userId);
-        Event event = em.find(Event.class, eventId);
-        user.addEvent(event);
-        em.getTransaction().commit();
-    }
+//    public void AddEventToUser(int userId, int eventId) {
+//        EntityManager em = emf.createEntityManager();
+//        em.getTransaction().begin();
+//        User user = em.find(User.class, userId);
+//        Event event = em.find(Event.class, eventId);
+//        user.addEvent(event);
+//        em.getTransaction().commit();
+//    }
 }
 

@@ -72,7 +72,7 @@ public EventDAO(EntityManagerFactory emf) {
         em.getTransaction().commit();
     }
 
-    public void addUserToEvent(User user, int createdEvent) {
+    public void addUserToEvent(User user, Event createdEvent) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Event event = em.find(Event.class, createdEvent.getEventId());
@@ -88,18 +88,18 @@ public EventDAO(EntityManagerFactory emf) {
         em.getTransaction().commit();
     }
 
-    public User getUsersForEvent(Event event , User user) {
+    public List<User> getUsersForEvent(Event event) {
         EntityManager em = emf.createEntityManager();
-        return em.createQuery("SELECT u FROM User u JOIN u.events e WHERE e.EventId = :eventId", User.class)
+        return em.createQuery("SELECT u FROM User u JOIN u.events e WHERE e.id = :eventId", User.class)
                 .setParameter("eventId", event.getEventId())
-                .getSingleResult();
+                .getResultList();
     }
 
-    public User getAllRegistereUsers(User user, Event event) {
-        EntityManager em = emf.createEntityManager();
-        return em.createQuery("SELECT u FROM User u JOIN u.events e WHERE e.EventId = :eventId", User.class)
-                .setParameter("eventId", event.getEventId())
-                .getSingleResult();
+    public List<User>getAllRegistereUsers(  ) {
+          EntityManager em = emf.createEntityManager();
+        return em.createQuery("SELECT u FROM User u JOIN u.events e WHERE e.id = :eventId", User.class)
+                .getResultList();
+
 
 
     }

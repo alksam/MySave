@@ -50,6 +50,7 @@ public class Route {
                 .setRoute(getSecuredRoutes())
                 .setRoute(getRoutes())
                 .setRoute(getUserRoutes())
+                .setRoute(getRegisterRoutes())
                 .checkSecurityRoles();
     }
 
@@ -66,6 +67,21 @@ public class Route {
                     throw new Exception(String.valueOf(ApplicationConfig.getInstance().setExceptionHandling()));
                 });
 
+            });
+        };
+    }
+
+
+    public  static EndpointGroup getRegisterRoutes(){
+        return ()->{
+            path("/register", ()->{
+              get("/all", userController.getAllRegistereUsers(), Role.ANYONE);
+                get("/{eventId}", userController.getUsersForEvent(), Role.ANYONE);
+                post("/create/{userId}/{eventId}", userController.registerUserForEvent(), Role.ANYONE);
+                delete("/delete/{userId}/{eventId}", userController.removeUserFromEvent(), Role.ANYONE);
+                get("/error", ctx -> {
+                    throw new Exception(String.valueOf(ApplicationConfig.getInstance().setExceptionHandling()));
+                });
             });
         };
     }
