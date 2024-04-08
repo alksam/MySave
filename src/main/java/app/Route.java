@@ -75,8 +75,8 @@ public class Route {
     public  static EndpointGroup getRegisterRoutes(){
         return ()->{
             path("/register", ()->{
-              get("/all", userController.getAllRegistereUsers(), Role.ANYONE);
-                get("/{eventId}", userController.getUsersForEvent(), Role.ANYONE);
+              get("/all/{eventId}", userController.getAllRegistereUsers(), Role.ANYONE);
+                get("//{userId}/{eventId}", userController.getUsersForEvent(), Role.ANYONE);
                 post("/create/{userId}/{eventId}", userController.registerUserForEvent(), Role.ANYONE);
                 delete("/delete/{userId}/{eventId}", userController.removeUserFromEvent(), Role.ANYONE);
                 get("/error", ctx -> {

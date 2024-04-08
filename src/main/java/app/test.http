@@ -74,15 +74,20 @@ DELETE http://localhost:7007/api/users/delete/1
 
 ### register
 
-GET http://localhost:7007/api/register/all
+GET http://localhost:7007/api/register/all/3
+
 
 ###
 
-GET http://localhost:7007/api/register/3
+GET http://localhost:7007/api/register/1/2
+
 
 ###
 
-POST http://localhost:7007/api/register/create/2/1
+POST http://localhost:7007/api/register/create/2/3
+
+
+
 
 
 ### virker ikke
