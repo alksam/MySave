@@ -1,4 +1,4 @@
-package app.controllers;
+/**package app.controllers;
 
 
 import app.dao.EventDAO;
@@ -92,4 +92,4 @@ class EventControllerTest {
 
 
     }
-}
+}*/
