@@ -7,6 +7,7 @@ import app.model.Role;
 import app.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
 
@@ -52,14 +53,31 @@ public class UserDAO implements ISecurityDAO{
 
 
 
-
-
-
-
-
-
-
     public User verifyUser(String name, String password) throws EntityNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            // Using JPQL to query by username
+            User user = em.createQuery("SELECT u FROM User u WHERE u.name = :name", User.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+
+
+            if (!user.verifyUser(password)) {
+                throw new EntityNotFoundException("Wrong password");
+            }
+            return user;
+        } catch (NoResultException e) {
+            throw new EntityNotFoundException("No user found with that name: " + name);
+        } finally {
+            em.close();
+        }
+    }
+
+
+
+
+
+/*public User verifyUser(String name, String password) throws EntityNotFoundException {
         EntityManager em = emf.createEntityManager();
         User user = em.find(User.class, name);
         if (user == null)
@@ -67,7 +85,7 @@ public class UserDAO implements ISecurityDAO{
         if (!user.verifyUser(password))
             throw new EntityNotFoundException("Wrong password");
         return user;
-    }
+    }*/
 
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();

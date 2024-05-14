@@ -53,7 +53,7 @@ GET http://localhost:7007/api/users/all
 
 ###
 
-GET http://localhost:7007/api/users/2
+GET http://localhost:7007/api/users/70
 
 ###
 
@@ -94,6 +94,24 @@ POST http://localhost:7007/api/register/create/2/3
 
 DELETE http://localhost:7007/api/register/delete/1/2
 
+### login
+POST http://localhost:7007/api/auth/login
+content-type: application/json
+
+{
+"name": "qm",
+"password": "53655"
+}
 
 
+###
+POST http://localhost:7007/api/auth/register
+content-type: application/json
+
+{
+"name": "qm",
+"password": "53655",
+"email": "smmmmjjd@",
+  "phoneNumber": 12345678
+}
 
