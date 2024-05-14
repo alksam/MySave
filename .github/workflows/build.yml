@@ -36,4 +36,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ksammo/deployment:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/deployment:latest
