@@ -55,7 +55,7 @@ public class HibernateConfig {
                 props = setTestProperties(props);
             }
             else if(System.getenv("DEPLOYED") != null) {
-                setDeployedProperties(props);
+               props = setDeployedProperties(props);
             }
             else {
                 props = setDevProperties(props);
@@ -131,6 +131,12 @@ public class HibernateConfig {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
+    }
+    public static EntityManagerFactory getEntityManagerFactory(boolean isTest) {
+        //if (isTest) return getEntityManagerFactoryConfigTest();
+        boolean isDeployed = (System.getenv("DEPLOYED") != null);
+        if (isDeployed) return buildEntityFactoryConfigDeployed();
+        return getEntityManagerFactory();
     }
 
 
