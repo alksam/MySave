@@ -26,6 +26,7 @@ public class Main2 {
         User user3 = new User("fhhffsfff", "1234", "ggg@dff", 5533112);
         User user1 = dao.create(user2);
         User user = dao.create(user3);
+        //hry
 
         System.out.println(user.getName());
         Event event = new Event
