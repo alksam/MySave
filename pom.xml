@@ -240,7 +240,7 @@
                                 <!-- The plugin needs to know which class has the main method  -->
                                 <!-- therefore we need to specify the path to the main class   -->
                                 <!-- ========================================================= -->
-                                src/main/java/app/Route
+                                app/Route
                             </mainClass>
                         </transformer>
                     </transformers>
