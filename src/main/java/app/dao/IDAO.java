@@ -12,5 +12,10 @@ public interface IDAO<T> {
 
     T update(T entity);
 
-    void delete(int id);
+    T delete(int id);
+
+
+
+
+
 }

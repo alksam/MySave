@@ -71,6 +71,7 @@ public class ApplicationConfig {
         app.start(port);
         return instance;
     }
+
     public ApplicationConfig setRoute(EndpointGroup route){
         app.routes(route);
         return instance;

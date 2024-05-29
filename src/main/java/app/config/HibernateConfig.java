@@ -1,12 +1,9 @@
 package app.config;
 
 
-import app.model.Category;
-import app.model.Role;
-import app.model.User;
+import app.model.*;
 import app.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
-import app.model.Event;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -42,6 +39,7 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(Role.class);
         configuration.addAnnotatedClass(Event.class);
         configuration.addAnnotatedClass(Category.class);
+        configuration.addAnnotatedClass(Car.class);
 
     }
 

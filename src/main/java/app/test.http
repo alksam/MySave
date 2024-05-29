@@ -2,7 +2,7 @@ GET http://localhost:7007/api/events
 
 ###
 
-GET http://localhost:7007/api/events/1
+GET http://localhost:7007/api/events/12
 
 
 ###
@@ -26,19 +26,21 @@ POST http://localhost:7007/api/events/create
 
 ### virker ikke
 
-PUT http://localhost:7007/api/events/update/6
+PUT http://localhost:7007/api/events/update/
 
-"title": "Løb",
-"description": "løb",
-"date": "2027-02-02",
-"time": "20:00",
-"duration": 90,
-"capacity": 40,
-"location": "Aarhus",
+{
+"title": "Dans",
+"description": "dans",
+"date": "2025-02-02",
+"time": "10:00",
+"duration": 120,
+"capacity": 36,
+"location": "København",
 "instructor": "Bibi",
-"price": 75.00,
+"price": 125.00,
 "status": "Active",
 "category": null
+}
 
 
 
@@ -114,4 +116,58 @@ content-type: application/json
 "email": "smmmmjjd@",
   "phoneNumber": 12345678
 }
+
+
+###
+
+### get all car Entity
+
+GET http://localhost:7007/api/cars/
+
+### getbyid car Entity
+
+GET http://localhost:7007/api/cars/by/3
+
+
+
+
+### delete car Entity
+
+DELETE http://localhost:7007/api/cars/delete/1
+
+
+### create car Entity
+
+
+POST http://localhost:7007/api/cars/create
+Content-Type: application/json
+
+{
+  "brand": "Toyota",
+  "model": "Corolla",
+  "make": "Japan",
+  "year": 2020,
+  "firstRegistrationDate": 230,
+  "price": 18000
+}
+
+###update car Entity
+
+PUT http://localhost:7007/api/cars/update/6
+Content-Type: application/json
+
+{
+  "id": 6,
+  "brand": "Toyota",
+  "model": "Corolla",
+  "make": "Japan",
+  "year": 2018,
+  "firstRegistrationDate": 2010,
+  "price": 18000
+}
+
+###
+
+
+###
 

@@ -92,19 +92,18 @@ public class EventController implements IEventController{
     @Override
     public Handler updateEvent() {
         return (ctx) -> {
-            ObjectNode returnObject = objectMapper.createObjectNode();
             try {
                 EventDTO eventInput = ctx.bodyAsClass(EventDTO.class);
-                int id = Integer.parseInt(ctx.pathParam("id"));
-                Event updated = eventDAO.getEventById(id);
-                eventInput.getEventId();
-                ctx.json(eventDAO.update(updated).getEventId());
-
+                Event eventToUpdate = convertToEntity(eventInput);
+                Event updatedEvent = eventDAO.update(eventToUpdate);
+                ctx.json(updatedEvent);
             } catch (Exception e) {
                 ctx.status(500);
-                ctx.json(returnObject.put("msg", "Internal server error"));
+                ctx.json(e.getMessage());
             }
         };
+
+
     }
 
     @Override

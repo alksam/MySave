@@ -3,6 +3,7 @@ package app;
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
 import app.controllers.*;
+import app.dao.CarDAOMock;
 import app.dao.EventDAO;
 ;
 import app.dao.UserDAO;
@@ -26,6 +27,9 @@ public class Route {
     private static UserDAO2 dao= new UserDAO2(emf);
     private static UserDAO userDAO = new UserDAO(emf);
     private static IUserController userController= new UserController(dao);
+    private static CarDAOMock carDAOMock = new CarDAOMock(emf);
+
+    private static CarEntityControler carEntityControler = new CarEntityControler(carDAOMock);
 
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
@@ -51,8 +55,27 @@ public class Route {
                 .setRoute(getRoutes())
                 .setRoute(getUserRoutes())
                 .setRoute(getRegisterRoutes())
-                .checkSecurityRoles();
+                .setRoute(getCarEntity());
+
     }
+
+
+    public static EndpointGroup getCarEntity() {
+        return () -> {
+            path("/cars", () -> {
+                get("/", carEntityControler.getAll());
+                get("/by/{id}", carEntityControler.getById());
+                post("/create", carEntityControler.create());
+                put("/update/{id}", carEntityControler.update());
+                delete("/delete/{id}", carEntityControler.delete());
+
+                get("/error", ctx -> {
+                    throw new Exception("This is an error");
+                });
+            });
+        };
+    }
+
 
     public static EndpointGroup getRoutes() {
         return () -> {
