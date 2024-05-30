@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.HttpStatus;
+import io.javalin.plugin.bundled.CorsPluginConfig;
 import io.javalin.security.AccessManager;
 import io.javalin.security.RouteRole;
 
@@ -29,13 +30,20 @@ public class ApplicationConfig {
         }
         return instance;
     }
+
     public ApplicationConfig initiateServer(){
-        app = Javalin.create(config->{
+        app = Javalin.create(config -> {
             config.http.defaultContentType = "application/json";
             config.routing.contextPath = "/api";
-        });
+            config.plugins.enableDevLogging();
+            config.plugins.enableCors(cors -> {
+                cors.add(it -> {
+                    it.anyHost();
+                });
+        });   });
 
         return instance;
+
     }
 
     public ApplicationConfig checkSecurityRoles() {

@@ -38,6 +38,8 @@ public class Route {
         startServer(7007);
         userController= new UserController(dao);
 
+
+
     }
 
     public static void startServer(int port){
@@ -50,24 +52,23 @@ public class Route {
                 .startServer(7007)
                 .setExceptionHandling()
                 .setRoute(getSecurityRoutes())
-                .setupAccessManager()
                 .setRoute(getSecuredRoutes())
                 .setRoute(getRoutes())
                 .setRoute(getUserRoutes())
                 .setRoute(getRegisterRoutes())
-                .setRoute(getCarEntity());
-
+                .setRoute(getCarEntity())
+                .checkSecurityRoles();
     }
 
 
     public static EndpointGroup getCarEntity() {
         return () -> {
             path("/cars", () -> {
-                get("/", carEntityControler.getAll());
-                get("/by/{id}", carEntityControler.getById());
-                post("/create", carEntityControler.create());
-                put("/update/{id}", carEntityControler.update());
-                delete("/delete/{id}", carEntityControler.delete());
+                get("/", carEntityControler.getAll(), Role.ANYONE);
+                get("/by/{id}", carEntityControler.getById(), Role.ANYONE);
+                post("/create", carEntityControler.create(), Role.ANYONE);
+                put("/update/{id}", carEntityControler.update(), Role.ANYONE);
+                delete("/delete/{id}", carEntityControler.delete(), Role.ANYONE);
 
                 get("/error", ctx -> {
                     throw new Exception("This is an error");

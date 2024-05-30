@@ -45,9 +45,13 @@ public class SecurityController implements ISecurityController{
             } catch (EntityExistsException e) {
                 ctx.status(HttpStatus.UNPROCESSABLE_CONTENT);
                 ctx.json(returnObject.put("msg", "User already exists"));
+            } catch (Exception e) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                ctx.json(returnObject.put("msg", "An error occurred during registration"));
             }
         };
     }
+
     @Override
     public Handler login() {
         return (ctx) -> {

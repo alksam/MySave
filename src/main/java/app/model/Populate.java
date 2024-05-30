@@ -1,15 +1,9 @@
 package app.model;
 
 import app.config.HibernateConfig;
-import app.controllers.CarEntityControler;
 import app.dao.CarDAOMock;
-import app.model.Car;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-
-
-import java.util.List;
-import java.util.Map;
 
 public class Populate {
 
@@ -26,7 +20,7 @@ public class Populate {
         em.getTransaction().begin();
 
 
-        Car car = new Car();
+
 
 
 

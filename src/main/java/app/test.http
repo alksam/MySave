@@ -111,8 +111,8 @@ POST http://localhost:7007/api/auth/register
 content-type: application/json
 
 {
-"name": "qm",
-"password": "53655",
+"name": "qmmm",
+"password": "5555",
 "email": "smmmmjjd@",
   "phoneNumber": 12345678
 }
